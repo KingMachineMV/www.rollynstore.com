@@ -1,89 +1,316 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROLLYN STORE</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Rollynstore - Zapatería</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #ecf0f1;
+        }
+
+        body {
+            background-color: #f5f6fa;
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 5%;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-links a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url('https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-btn {
+            padding: 1rem 2rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 4rem 5%;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            transition: 0.3s;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .price {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+
+        .quick-view {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .product-card:hover .quick-view {
+            bottom: 20px;
+            opacity: 1;
+        }
+
+        .product-showcase {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 5%;
+            background-color: var(--light-bg);
+        }
+
+        .showcase-shoe {
+            width: 400px;
+            height: 400px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            transition: 0.5s;
+            cursor: grab;
+        }
+
+        .color-selector {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .newsletter {
+            padding: 4rem 5%;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .newsletter input {
+            padding: 1rem;
+            width: 300px;
+            border-radius: 30px 0 0 30px;
+            border: none;
+            margin-top: 1rem;
+        }
+
+        .newsletter button {
+            padding: 1rem 2rem;
+            border-radius: 0 30px 30px 0;
+            border: none;
+            background-color: var(--accent-color);
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-shoe {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <a href="#" class="logo">ROLLYN STORE</a>
-        <nav>
-            <ul>
-                <li>
-                    <a href="#">Home</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <section>
-        <img src="curve.png" class="wave">
-        <div class="contentBx">
-            <h2>SITIO EN CONSTRUCCIÓN</h2>
-            <p>
-                Gracias por ser parte de mi emprendimiento y de esta comunidad. Estamos emocionados por presentarte nuestra página web y esperamos que disfrutes de todas las novedades que hemos preparado para ti, ofertas, promociones, dinamicas y tendencias en todos nuestros articulos.
-            </p>
-            <div class="countdown">
-                <div class="time"><div id="day"></div><span>Dias</span></div>
-                <div class="time"><div id="hour"></div><span>Horas</span></div>
-                <div class="time"><div id="minute"></div><span>Minutos</span></div>
-                <div class="time"><div id="second"></div><span>Segundos</span></div>
-            </div>
-            <a href="#" onclick="toggle();">Avisame!</a>
+    <nav class="sticky-nav">
+        <div class="logo">ROLLYN<span>STORE</span></div>
+        <div class="nav-links">
+            <a href="#home">Inicio</a>
+            <a href="#products">Productos</a>
+            <a href="#about">Nosotros</a>
+            <a href="#contact">Contacto</a>
         </div>
-        <div class="imgBx">
-            <img src="man.png" alt="">
-        </div>
-        <ul class="sci">
-            <li><a href="#"><img src="facebook.png"></a></li>
-            <li><a href="#"><img src="twitter.png"></a></li>
-            <li><a href="#"><img src="instagram.png"></a></li>
+    </nav>
 
-        </ul>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Camina con Estilo</h1>
+            <p>Encuentra tu par perfecto</p>
+            <button class="cta-btn">Explora la Colección</button>
+        </div>
     </section>
-    <div class="newsletter">
-        <h2>Estén atentos</h2>
-        <p>Recibe notificaciones cuando estemos listos!</p>
-        <div class="inputBox">
-            <form>
-                <input type="text" name="" required="text" placeholder="Ingrese num. Telefono o Emal">
-                <input type="submit" value="Enviar">
-            </form>
-        </div>
-        <img src="close.png" class="close" onclick="toggle()" >
-    </div>
-    <script type="text/javascript">
 
-        function toggle(){
-            var newsletter = document.querySelector('.newsletter');
-            newsletter.classList.toggle('active')
-        }
+    <section class="products-grid" id="products">
+        <!-- Productos generados con JavaScript -->
+    </section>
 
-        var countDate = new Date('Sep 1, 2024 00:00:00').getTime();
+    <section class="product-showcase">
+        <div class="showcase-shoe floating-shoe"></div>
+    </section>
 
-        function newYear(){
-            var now = new Date().getTime();
-                gap = countDate - now;
+    <section class="newsletter">
+        <h2>Suscríbete para Ofertas Exclusivas</h2>
+        <input type="email" placeholder="Ingresa tu email">
+        <button>Suscribirse</button>
+    </section>
 
-                var second = 1000;
-                var minute = second * 60;
-                var hour = minute * 60
-                var day = hour * 24
+    <script>
+        // Generar productos dinámicamente
+        const products = [
+            {name: 'Zapato Deportivo', price: 89.99, image: 'https://example.com/shoe1.jpg', color: '#e74c3c'},
+            {name: 'Bota Casual', price: 129.99, image: 'https://example.com/shoe2.jpg', color: '#2c3e50'},
+            {name: 'Sandalia Verano', price: 59.99, image: 'https://example.com/shoe3.jpg', color: '#f1c40f'},
+            {name: 'Zapato Formal', price: 159.99, image: 'https://example.com/shoe4.jpg', color: '#3498db'}
+        ];
 
-                var d =Math.floor(gap / (day));
-                var h =Math.floor((gap % (day)) / (hour));
-                var m =Math.floor((gap % (hour)) / (minute));
-                var s =Math.floor((gap % (minute)) / (second));
+        const productsGrid = document.querySelector('.products-grid');
+        
+        products.forEach(product => {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.innerHTML = `
+                <div class="product-image" style="background-image: url(${product.image})"></div>
+                <div class="product-info">
+                    <h3>${product.name}</h3>
+                    <p class="price">$${product.price}</p>
+                    <button class="quick-view cta-btn">Vista Rápida</button>
+                </div>
+            `;
+            productsGrid.appendChild(productCard);
+        });
 
-                document.getElementById('day').innerText = d;
-                document.getElementById('hour').innerText = h;
-                document.getElementById('minute').innerText = m;
-                document.getElementById('second').innerText = s;
-        }
-        setInterval(function(){
-            newYear()
-        },1000)
+        // Interactividad
+        document.querySelectorAll('.quick-view').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Mostrar modal con detalles del producto
+                alert('Función de vista rápida - En desarrollo');
+            });
+        });
+
+        // Cambiar color del zapato showcase
+        const colorOptions = document.querySelectorAll('.color-option');
+        const showcaseShoe = document.querySelector('.showcase-shoe');
+        
+        colorOptions.forEach(color => {
+            color.addEventListener('click', () => {
+                showcaseShoe.style.backgroundColor = color.style.backgroundColor;
+            });
+        });
+
+        // Animación al desplazar
+        window.addEventListener('scroll', () => {
+            document.querySelector('.sticky-nav').style.backgroundColor = 
+                window.scrollY > 100 ? 'rgba(255,255,255,0.98)' : 'rgba(255,255,255,0.95)';
+        });
     </script>
 </body>
 </html>
